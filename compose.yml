@@ -28,7 +28,10 @@ services:
         soft: 262144
         hard: 262144
     environment:
-      - CLICKHOUSE_SKIP_USER_SETUP=1
+      # 自动创建默认数据库，避免初次启动缺库导致 81 错误
+      - CLICKHOUSE_DB=plausible_events_db
+      - CLICKHOUSE_USER=default
+      - CLICKHOUSE_PASSWORD=
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 -O - http://127.0.0.1:8123/ping || exit 1"]
       start_period: 1m
@@ -63,7 +66,8 @@ services:
       - HTTPS_PORT
       # databases: https://github.com/plausible/community-edition/wiki/configuration#database
       - DATABASE_URL
-      - CLICKHOUSE_DATABASE_URL
+      # 默认指向本 compose 内的 ClickHouse，减少缺省配置带来的 81 缺库错误
+      - CLICKHOUSE_DATABASE_URL=clickhouse://default:@plausible_events_db:8123/plausible_events_db
       # Google: https://github.com/plausible/community-edition/wiki/configuration#google
       - GOOGLE_CLIENT_ID
       - GOOGLE_CLIENT_SECRET
