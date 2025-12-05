@@ -69,8 +69,8 @@ services:
       # databases: https://github.com/plausible/community-edition/wiki/configuration#database
       # 硬编码数据库地址，避免被 Dokploy 环境变量覆盖
       - DATABASE_URL=postgresql://postgres:postgres@plausible_db:5432/plausible
-      # 默认指向本 compose 内的 ClickHouse，减少缺省配置带来的 81 缺库错误
-      - CLICKHOUSE_DATABASE_URL=clickhouse://default:@plausible_events_db:8123/plausible_events_db
+      # 默认指向本 compose 内的 ClickHouse，使用 http:// 协议
+      - CLICKHOUSE_DATABASE_URL=http://plausible_events_db:8123/plausible_events_db
       # Google: https://github.com/plausible/community-edition/wiki/configuration#google
       - GOOGLE_CLIENT_ID
       - GOOGLE_CLIENT_SECRET
