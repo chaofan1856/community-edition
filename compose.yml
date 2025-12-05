@@ -6,6 +6,8 @@ services:
       - db-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=postgres
+      # 自动创建 plausible 数据库
+      - POSTGRES_DB=plausible
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       start_period: 1m
